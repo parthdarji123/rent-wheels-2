@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rent Wheels</title>
+
+    <!-- Added Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Roboto:wght@300;400;500&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* ===== GENERAL STYLING ===== */
+        :root {
+            --primary-color: #ff4b2b;
+            --primary-hover: #ff416c;
+            --bg-gradient: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --text-color: #ffffff;
+            --heading-font: 'Orbitron', sans-serif;
+            --body-font: 'Roboto', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: var(--body-font);
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        /* ===== LOGIN PAGE ===== */
+        #loginPage {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 50px;
+            border-radius: 20px;
+            backdrop-filter: blur(15px);
+            text-align: center;
+            width: 350px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        .login-box h2 {
+            margin-bottom: 30px;
+            font-family: var(--heading-font);
+            letter-spacing: 1px;
+        }
+
+        .login-box input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            outline: none;
+        }
+
+        .login-box input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .login-box button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 8px;
+            background: var(--primary-color);
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            transition: 0.3s;
+            font-family: var(--heading-font);
+        }
+
+        .login-box button:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 75, 43, 0.4);
+        }
+
+        .admin-login-link {
+            display: block;
+            margin-top: 15px;
+            font-size: 14px;
+            color: #ccc;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        /* ===== HOME PAGE ===== */
+        #homePage {
+            display: none;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav h1 {
+            font-size: 26px;
+            font-family: var(--heading-font);
+            background: -webkit-linear-gradient(#fff, #ccc);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        nav div {
+            display: flex;
+            gap: 15px;
+        }
+
+        nav input {
+            padding: 10px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            width: 250px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            outline: none;
+            text-align: center;
+        }
+
+        nav button {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 20px;
+            background: var(--primary-color);
+            color: white;
+            cursor: pointer;
+            font-family: var(--heading-font);
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        nav button:hover {
+            background: var(--primary-hover);
+        }
+
+        section {
+            padding: 40px 60px;
+        }
+
+        .section-title {
+            font-size: 32px;
+            margin-bottom: 30px;
+            font-family: var(--heading-font);
+            border-bottom: 2px solid var(--primary-color);
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            transition: 0.4s;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            border-color: var(--primary-color);
+        }
+
+        .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: 0.4s;
+        }
+
+        .card:hover img {
+            transform: scale(1.05);
+        }
+
+        .card-body {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .card-body h3 {
+            font-family: var(--heading-font);
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+
+        .price {
+            color: #ffd700;
+            font-weight: bold;
+            font-size: 18px;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        /* ===== DETAILS PAGE ===== */
+        #detailsPage {
+            display: none;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .details-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(20px);
+            text-align: center;
+            max-width: 700px;
+            width: 100%;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .details-box img {
+            width: 100%;
+            max-height: 350px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .details-box h2 {
+            margin-bottom: 15px;
+            font-size: 36px;
+            font-family: var(--heading-font);
+        }
+
+        .details-box .price {
+            font-size: 24px;
+            margin-bottom: 30px;
+            display: block;
+            color: #00ff88;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .action-btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+            color: white;
+            transition: 0.3s;
+            font-family: var(--heading-font);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .buy-btn {
+            background: #28a745;
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+        }
+
+        .buy-btn:hover {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.5);
+        }
+
+        .info-btn {
+            background: #17a2b8;
+            box-shadow: 0 4px 15px rgba(23, 162, 184, 0.3);
+        }
+
+        .info-btn:hover {
+            background: #138496;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(23, 162, 184, 0.5);
+        }
+
+        .back-btn {
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: white;
+        }
+
+        /* ===== MODAL & INVOICE ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: #1f2229;
+            padding: 30px;
+            border-radius: 15px;
+            width: 400px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content h2 {
+            font-family: var(--heading-font);
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        .modal-content input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 1px solid #444;
+            background: #2c303a;
+            color: white;
+        }
+
+        .invoice-details {
+            text-align: left;
+            margin: 20px 0;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .invoice-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .invoice-total {
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding-top: 10px;
+            margin-top: 10px;
+            font-weight: bold;
+            font-size: 18px;
+            color: #ffd700;
+        }
+
+        /* ===== ADMIN PAGE ===== */
+        #adminPage {
+            display: none;
+            padding: 40px;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .admin-table-container {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+        }
+
+        th,
+        td {
+            padding: 15px;
+            color: #aeaeae;
+            margin-bottom: 10px;
+            font-family: var(--body-font);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-card p {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--primary-color);
+            font-family: var(--heading-font);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- LOGIN PAGE -->
+    <div id="loginPage">
+        <div class="login-box">
+            <h2>Rent Wheels</h2>
+            <input type="text" id="username" placeholder="Enter Username">
+            <input type="password" id="password" placeholder="Enter Password">
+            <button onclick="login()">LOGIN</button>
+
+        </div>
+    </div>
+
+    <!-- HOME PAGE -->
+    <div id="homePage">
+        <nav>
+            <h1>🚗 Rent Wheels</h1>
+            <div>
+                <input type="text" id="search" placeholder="Search for your dream ride..." onkeyup="searchVehicle()">
+                <button onclick="logout()">LOGOUT</button>
+            </div>
+        </nav>
+
+        <!-- CAR SECTION -->
+        <section>
+            <div class="section-title">🚗 Cars</div>
+            <div class="cards" id="carSection">
+                <!-- Existing Cars -->
+                <div class="card" onclick="showDetails(this)" data-url="https://www.carwale.com/bmw-cars/x5/">
+                    <img src="https://hips.hearstapps.com/hmg-prod/images/2024-bmw-x5-xdrive-50e-796-659d5427d6862.jpg?crop=0.656xw:0.492xh;0.0768xw,0.445xh&resize=1200:*"
+                        alt="Car">
+                    <div class="card-body">
+                        <h3>BMW X5</h3>
+                        <p class="price">₹9000 / day</p>
+                    </div>
+                </div>
+
+                <div class="card" onclick="showDetails(this)" data-url="https://www.carwale.com/tata-cars/punch-ev/">
+                    <img src="https://cdni.autocarindia.com/Utils/ImageResizerV2.ashx?n=https://cdni.autocarindia.com/ExtraImages/20240123095848_Punch%20EV%20Web%20Resized%20and%20Watermarked._006.jpeg&w=500&h=330&q=75&c=1"
+                        alt="Car">
+                    <div class="card-body">
+                        <h3>TATA PUNCH</h3>
+                        <p class="price">₹5500 / day</p>
+                    </div>
+                </div>
+
+                <div class="card" onclick="showDetails(this)" data-url="https://www.carwale.com/audi-cars/a4/">
+                    <img src="https://imgd.aeplcdn.com/664x374/n/cw/ec/51909/a4-exterior-right-front-three-quarter-80.png?isig=0&q=80"
+                        alt="Car">
+                    <div class="card-body">
+                        <h3>Audi A4</h3>
+                        <p class="price">₹9500 / day</p>
+                    </div>
+                </div>
+
+                <div class="card" onclick="showDetails(this)" data-url="https://www.carwale.com/rolls-royce-cars/">
+                    <img src="https://imgd.aeplcdn.com/664x374/n/cw/ec/30181/phantom-exterior-right-front-three-quarter-2.png?isig=0&q=80"
+                        alt="Car">
+                    <div class="card-body">
+                        <h3>Rolls-Royce</h3>
+                        <p class="price">₹110500 / day</p>
+                    </div>
+                </div>
+
+                <!-- NEW CARS -->
+                <div class="card" onclick="showDetails(this)" data-url="https://www.carwale.com/lamborghini-cars/urus/">
+                    <img src="https://imgd.aeplcdn.com/664x374/n/cw/ec/53859/urus-performante-exterior-right-front-three-quarter-4.jpeg?isig=0&q=80"
+                        alt="Car">
+                    <div class="card-body">
+                        <h3>Lamborghini Urus</h3>
+                        <p class="price">₹15000 / day</p>
+                    </div>
+                </div>
+
+                <div class="card" onclick="showDetails(this)" data-url="https://www.carwale.com/ford-cars/mustang/">
+                    <img src="https://imgd.aeplcdn.com/664x374/cw/ec/23766/Ford-Mustang-Exterior-126883.jpg?wm=0&q=80"
+                        alt="Car">
+                    <div class="card-body">
+                        <h3>Ford Mustang GT</h3>
+                        <p class="price">₹18000 / day</p>
+                    </div>
+                </div>
+
+                <div class="card" onclick="showDetails(this)"
+                    data-url="https://www.carwale.com/mercedes-benz-cars/g-class/">
+                    <img src="https://imgd.aeplcdn.com/664x374/n/cw/ec/150621/g-class-exterior-right-front-three-quarter-24.png?isig=0&q=80"
+                        alt="Car">
+                    <div class="card-body">
+                        <h3>Mercedes G-Wagon</h3>
+                        <p class="price">₹12000 / day</p>
+                    </div>
+                </div>
+
+                <!-- ADDED CARS -->
+                <div class="card" onclick="showDetails(this)" data-url="https://www.carwale.com/mahindra-cars/thar/">
+                    <img src="https://imgd.aeplcdn.com/664x374/n/cw/ec/204996/thar-2025-exterior-right-front-three-quarter-5.png?isig=0&q=80"
+                        alt="Car">
+                    <div class="card-body">
+                        <h3>Mahindra Thar</h3>
+                        <p class="price">₹10500 / day</p>
+                    </div>
+                </div>
+
+                <div class="card" onclick="showDetails(this)" data-url="https://www.carwale.com/toyota-cars/fortuner/">
+                    <img src="https://imgd.aeplcdn.com/664x374/n/cw/ec/44709/fortuner-exterior-right-front-three-quarter-28.png?isig=0&q=80"
+                        alt="Car">
+                    <div class="card-body">
+                        <h3>Toyota Fortuner</h3>
+                        <p class="price">₹9000 / day</p>
+                    </div>
+                </div>
+
+                <div class="card" onclick="showDetails(this)" data-url="https://www.carwale.com/hyundai-cars/creta/">
+                    <img src="https://imgd.aeplcdn.com/664x374/n/cw/ec/106815/creta-exterior-right-front-three-quarter-6.png?isig=0&q=80"
+                        alt="Car">
+                    <div class="card-body">
+                        <h3>Hyundai Creta</h3>
+                        <p class="price">₹10500 / day</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- BIKE SECTION -->
+        <section>
+            <div class="section-title">🏍 Bikes</div>
+            <div class="cards" id="bikeSection">
+                <!-- Existing Bikes -->
+                <div class="card" onclick="showDetails(this)"
+                    data-url="https://www.bikewale.com/royalenfield-bikes/continental-gt-650/">
+                    <img src="https://imgd.aeplcdn.com/664x374/n/cw/ec/1/versions/royalenfield-continental-gt-standard1770642530458.jpg?q=80"
+                        alt="Bike">
+                    <div class="card-body">
+                        <h3>Royal Enfield GT650</h3>
+                        <p class="price">₹7500 / day</p>
+                    </div>
+                </div>
+
+                <div class="card" onclick="showDetails(this)" data-url="https://www.bikewale.com/ktm-bikes/duke/">
+                    <img src="https://imgd.aeplcdn.com/664x374/n/cw/ec/129747/duke-390-left-front-three-quarter.png?isig=0&q=80"
+                        alt="Bike">
+                    <div class="card-body">
+                        <h3>KTM Duke</h3>
+                        <p class="price">₹1800 / day</p>
+                    </div>
+                </div>
+
+                <!-- NEW BIKES -->
+                <div class="card" onclick="showDetails(this)"
+                    data-url="https://www.bikewale.com/kawasaki-bikes/ninja-zx-10r/">
+                    <img src="https://imgd.aeplcdn.com/664x374/n/cw/ec/1/versions/--standard1757579629039.jpg?q=80"
+                        alt="Bike">
+                    <div class="card-body">
+                        <h3>Kawasaki Ninja ZX-10R</h3>
+                        <p class="price">₹15000 / day</p>
+                    </div>
+                </div>
+
+                <div class="card" onclick="showDetails(this)"
+                    data-url="https://www.bikewale.com/harleydavidson-bikes/street-glide/">
+                    <img src="https://imgd.aeplcdn.com/664x374/n/qpqcohb_1879311.jpg?q=80" alt="Bike">
+                    <div class="card-body">
+                        <h3>Harley Davidson Street Glide</h3>
+                        <p class="price">₹4000 / day</p>
+                    </div>
+                </div>
+
+                <div class="card" onclick="showDetails(this)"
+                    data-url="https://www.bikewale.com/ducati-bikes/panigale-v4/">
+                    <img src="https://imgd.aeplcdn.com/664x374/n/cw/ec/1/versions/ducati-panigale-v4-2025-standard1741200111106.jpg?v=1741200111391&q=80"
+                        alt="Bike">
+                    <div class="card-body">
+                        <h3>Ducati Panigale V4</h3>
+                        <p class="price">₹6500 / day</p>
+                    </div>
+                </div>
+
+                <!-- ADDED BIKES -->
+                <div class="card" onclick="showDetails(this)"
+                    data-url="https://www.bikewale.com/yamaha-bikes/yzf-r15-v4/">
+                    <img src="https://imgd.aeplcdn.com/664x374/n/bw/models/colors/yamaha-select-model-metallic-red-1704802630538.png?q=80"
+                        alt="Bike">
+                    <div class="card-body">
+                        <h3>Yamaha R15 V4</h3>
+                        <p class="price">₹10200 / day</p>
+                    </div>
+                </div>
+
+                <div class="card" onclick="showDetails(this)"
+                    data-url="https://www.bikewale.com/royalenfield-bikes/classic-350/">
+                    <img src="https://imgd.aeplcdn.com/664x374/n/cw/ec/183389/classic-350-right-front-three-quarter-2.jpeg?isig=0&q=80"
+                        alt="Bike">
+                    <div class="card-body">
+                        <h3>Royal Enfield Classic 350</h3>
+                        <p class="price">₹10400 / day</p>
+                    </div>
+                </div>
+
+                <div class="card" onclick="showDetails(this)"
+                    data-url="https://www.bikewale.com/royalenfield-bikes/super-meteor-650/">
+                    <img src="https://imgd.aeplcdn.com/664x374/n/cw/ec/1/versions/royalenfield-super-meteor-650-astral1748865528348.jpg?q=80"
+                        alt="Bike">
+                    <div class="card-body">
+                        <h3>Royal Enfield Super Meteor 650</h3>
+                        <p class="price">₹12000 / day</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </div>
+
+    <!-- DETAILS PAGE -->
+    <div id="detailsPage">
+        <div class="details-box">
+            <h2 id="dt-name">Vehicle Name</h2>
+            <img id="dt-img" src="" alt="Vehicle Image">
+            <h3 id="dt-price">Price: </h3>
+
+            <div class="btn-group">
+                <button class="action-btn buy-btn" onclick="openBookingModal()">Buy Now</button>
+                <button class="action-btn info-btn" onclick="moreInfo()">More Information</button>
+                <button class="action-btn back-btn" onclick="goHome()">Back</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- BOOKING MODAL -->
+    <div id="bookingModal" class="modal-overlay">
+        <div class="modal-content">
+            <h2>Book Your Ride</h2>
+            <input type="text" id="bookingName" placeholder="Your Name">
+            <input type="number" id="bookingDays" placeholder="Number of Days" min="1">
+            <div class="btn-group">
+                <button class="action-btn buy-btn" onclick="confirmBooking()">Confirm</button>
+                <button class="action-btn back-btn" onclick="closeModal('bookingModal')">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- INVOICE MODAL -->
+    <div id="invoiceModal" class="modal-overlay">
+        <div class="modal-content">
+            <h2>✅ Booking Confirmed!</h2>
+            <div class="invoice-details">
+                <div class="invoice-row"><span>Order ID:</span> <span id="inv-id">#12345</span></div>
+                <div class="invoice-row"><span>Customer:</span> <span id="inv-name">John Doe</span></div>
+                <div class="invoice-row"><span>Vehicle:</span> <span id="inv-vehicle">BMW X5</span></div>
+                <div class="invoice-row"><span>Days:</span> <span id="inv-days">2</span></div>
+                <div class="invoice-row"><span>Price/Day:</span> <span id="inv-price">₹5000</span></div>
+                <div class="invoice-total">Total: <span id="inv-total">₹10000</span></div>
+            </div>
+            <button class="action-btn buy-btn" onclick="closeModal('invoiceModal')">Close</button>
+        </div>
+    </div>
+
+    <!-- ADMIN PAGE -->
+    <div id="adminPage">
+        <div class="admin-header">
+            <h1>🛠 Admin Dashboard</h1>
+            <button class="action-btn back-btn" onclick="logout()">LOGOUT</button>
+        </div>
+
+        <!-- STATS SECTION -->
+        <div class="admin-stats">
+            <div class="stat-card">
+                <h3>Active Users (Live)</h3>
+                <p id="stat-active">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>Total Orders</h3>
+                <p id="stat-orders">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>Total Revenue</h3>
+                <p id="stat-revenue">₹0</p>
+            </div>
+        </div>
+
+        <div class="admin-table-container">
+            <table id="adminTable">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Customer</th>
+                        <th>Vehicle</th>
+                        <th>Days</th>
+                        <th>Total Price</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="adminTableBody">
+                    <!-- Rows will be injected here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // --- GLOBAL VARIABLES ---
+        let currentInfoUrl = "";
+        let currentVehicleName = "";
+        let currentVehiclePrice = 0;
+        let orders = [];
+
+        try {
+            orders = JSON.parse(localStorage.getItem('rentWheelsOrders')) || [];
+            if (!Array.isArray(orders)) orders = [];
+        } catch (e) {
+            console.error("Corrupt data found, resetting orders.", e);
+            orders = [];
+            localStorage.removeItem('rentWheelsOrders');
+        }
+
+        // --- NAVIGATION & LOGIN ---
+        function login() {
+            let userInput = document.getElementById("username");
+            let passInput = document.getElementById("password");
+
+            let user = userInput.value.trim();
+            let pass = passInput.value.trim();
+
+            if (user === "admin" && pass === "5954@") {
+                // Admin Login - User: admin, Pass: 5954@
+                document.getElementById("loginPage").style.display = "none";
+                document.getElementById("adminPage").style.display = "block";
+                renderAdmin();
+            } else if (user !== "" && pass !== "") {
+                // User Login (Any non-empty credentials for demo)
+                document.getElementById("loginPage").style.display = "none";
+                document.getElementById("homePage").style.display = "block";
+            } else {
+                alert("Invalid username or password!");
+            }
+        }
+
+        function logout() {
+            document.getElementById("loginPage").style.display = "flex";
+            document.getElementById("homePage").style.display = "none";
+            document.getElementById("adminPage").style.display = "none";
+            document.getElementById("username").value = "";
+            document.getElementById("password").value = "";
+        }
+
+        function goHome() {
+            document.getElementById("search").value = "";
+            document.getElementById("detailsPage").style.display = "none";
+            document.getElementById("homePage").style.display = "block";
+            searchVehicle();
+        }
+
+        // --- SEARCH ---
+        function searchVehicle() {
+            let input = document.getElementById("search").value.toLowerCase();
+            let cards = document.querySelectorAll(".card");
+
+            cards.forEach(card => {
+                let text = card.querySelector("h3").innerText.toLowerCase();
+                if (text.includes(input)) {
+                    card.style.display = "block";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        }
+
+        // --- DETAILS & BUYING FLOW ---
+        function showDetails(e) {
+            let img = e.querySelector("img").src;
+            let name = e.querySelector("h3").innerText;
+            let priceText = e.querySelector(".price").innerText;
+
+            currentVehicleName = name;
+            // Extract number from "₹5000 / day"
+            currentVehiclePrice = parseInt(priceText.replace(/[^\d]/g, ''));
+            currentInfoUrl = e.getAttribute("data-url");
+
+            document.getElementById("dt-name").innerText = name;
+            document.getElementById("dt-img").src = img;
+            document.getElementById("dt-price").innerText = priceText;
+
+            document.getElementById("homePage").style.display = "none";
+            document.getElementById("detailsPage").style.display = "flex";
+        }
+
+        function moreInfo() {
+            if (currentInfoUrl) {
+                window.open(currentInfoUrl, "_blank");
+            } else {
+                alert("No information link available.");
+            }
+        }
+
+        function openBookingModal() {
+            document.getElementById("bookingModal").style.display = "flex";
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = "none";
+        }
+
+        function confirmBooking() {
+            let name = document.getElementById("bookingName").value;
+            let days = parseInt(document.getElementById("bookingDays").value);
+
+            if (!name || !days || days < 1) {
+                alert("Please enter a valid name and number of days.");
+                return;
+            }
+
+            let total = days * currentVehiclePrice;
+            let orderId = "#ORD" + Math.floor(Math.random() * 10000);
+
+            let newOrder = {
+                id: orderId,
+                customer: name,
+                vehicle: currentVehicleName,
+                days: days,
+                total: total,
+                status: "Pending"
+            };
+
+            // Save to LocalStorage
+            orders.push(newOrder);
+            localStorage.setItem('rentWheelsOrders', JSON.stringify(orders));
+
+            // Close booking modal
+            closeModal("bookingModal");
+
+            // Show Invoice
+            document.getElementById("inv-id").innerText = newOrder.id;
+            document.getElementById("inv-name").innerText = newOrder.customer;
+            document.getElementById("inv-vehicle").innerText = newOrder.vehicle;
+            document.getElementById("inv-days").innerText = newOrder.days;
+            document.getElementById("inv-price").innerText = "₹" + currentVehiclePrice;
+            document.getElementById("inv-total").innerText = "₹" + total;
+
+            document.getElementById("invoiceModal").style.display = "flex";
+
+            // Automatic Download
+            downloadInvoice(newOrder);
+        }
+
+        function downloadInvoice(order) {
+            let invoiceContent = `
+    RENT WHEELS - TAX INVOICE
+    --------------------------------
+    Order ID:    ${order.id}
+    Date:        ${new Date().toLocaleDateString()}
+    --------------------------------
+    Customer:    ${order.customer}
+    Vehicle:     ${order.vehicle}
+    Duration:    ${order.days} Days
+    --------------------------------
+    Total Amount: ₹${order.total}
+    Status:       Paid
+    --------------------------------
+    Thank you for choosing Rent Wheels!
+    Drive Safe.
+            `;
+
+            let blob = new Blob([invoiceContent], { type: "text/plain" });
+            let link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = `Invoice_${order.id}.txt`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // --- ADMIN PANEL ---
+        function renderAdmin() {
+            let tbody = document.getElementById("adminTableBody");
+
+            try {
+                tbody.innerHTML = ""; // Clear existing
+
+                // Filter valid orders to prevent crashes
+                let validOrders = orders.filter(o => o && typeof o === 'object');
+
+                // CALCULATE STATS
+                let totalOrders = validOrders.length;
+                let totalRevenue = validOrders.reduce((sum, order) => sum + (Number(order.total) || 0), 0);
+                // Simulate active users (Between 3 to 12)
+                let activeUsers = Math.floor(Math.random() * 10) + 3;
+
+                document.getElementById("stat-active").innerText = activeUsers;
+                document.getElementById("stat-orders").innerText = totalOrders;
+                document.getElementById("stat-revenue").innerText = "₹" + totalRevenue;
+
+                if (validOrders.length === 0) {
+                    tbody.innerHTML = "<tr><td colspan='6' style='text-align:center; padding: 20px;'>No orders found.</td></tr>";
+                    return;
+                }
+
+                validOrders.forEach(order => {
+                    let safeId = order.id || 'N/A';
+                    let safeCust = order.customer || 'Guest';
+                    let safeVehicle = order.vehicle || 'Unknown';
+                    let safeDays = order.days || 0;
+                    let safeTotal = order.total || 0;
+                    let safeStatus = order.status || 'Pending';
+
+                    let row = `<tr>
+                <td>${safeId}</td>
+                <td>${safeCust}</td>
+                <td>${safeVehicle}</td>
+                <td>${safeDays}</td>
+                <td>₹${safeTotal}</td>
+                <td><span class="status-pending">${safeStatus}</span></td>
+            </tr>`;
+                    tbody.innerHTML += row;
+                });
+            } catch (err) {
+                console.error("Admin render error:", err);
+                tbody.innerHTML = "<tr><td colspan='6' style='color:red; text-align:center;'>Error loading data. <button onclick='resetData()' style='background:red; color:white; border:none; padding:5px 10px; cursor:pointer; border-radius:4px;'>Reset Data</button></td></tr>";
+            }
+        }
+
+        function resetData() {
+            if (confirm("Are you sure you want to clear all order data? This cannot be undone.")) {
+                localStorage.removeItem('rentWheelsOrders');
+                orders = [];
+                renderAdmin();
+                alert("Data cleared.");
+            }
+        }
+    </script>
+
+</body>
+
+</html>
